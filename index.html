@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#8fd3a9">
+<title>FrutiControl</title>
+<meta name="description" content="FrutiControl: caja, pérdidas, suscripciones e inventario de tu frutería en segundos.">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<!-- Vista previa al compartir (WhatsApp, Facebook, LinkedIn). Cambia SITE por tu dirección pública, sin barra final. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="FrutiControl">
+<meta property="og:title" content="FrutiControl">
+<meta property="og:description" content="Gestiona tu frutería de forma rápida y fácil.">
+<meta property="og:url" content="SITE/">
+<meta property="og:image" content="SITE/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="SITE/og-image.jpg">
+<style>
+:root{--g:#2b9a5f;--gd:#1f7a49;--gl:#e4f5ea;--g50:#f2faf5;--g200:#b9e4c9;--g300:#8fd3a9;--t:#16301f;--m:#66806f;--line:#dfeae3;--red:#c0392b;--redl:#fbe9e7;--amb:#b7791f;--ambl:#fdf3dc;--bg:#f3f7f4;--card:#fff}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;border-radius:0!important}
+html{overflow-x:hidden;-webkit-text-size-adjust:100%}
+body{margin:0;overflow-x:hidden;background:var(--bg);color:var(--t);font:15px/1.45 "Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.shell{display:flex;min-height:100vh}
+nav{width:96px;flex:none;background:linear-gradient(180deg,#b9e4c9 0%,#8fd3a9 100%);position:sticky;top:0;height:100vh;display:flex;flex-direction:column;align-items:center;padding:22px 0 18px}
+.logo{width:100%;padding:0 26px 22px;margin-bottom:18px;border-bottom:1px solid #1f7a4929;line-height:0}.logo img{width:100%;height:76px;object-fit:contain;display:block;filter:drop-shadow(0 4px 6px #1f7a4940)}
+.menu{display:flex;flex-direction:column;gap:6px;width:100%;flex:1}
+nav button{position:relative;background:none;color:#1d5a38;display:flex;flex-direction:column;align-items:center;gap:5px;padding:13px 2px;min-height:64px;font-weight:600;width:calc(100% - 20px);margin:0 auto;transition:background .15s,color .15s}
+nav button svg{width:24px;height:24px}
+nav button em{font-style:normal;font-size:10.5px;letter-spacing:.04em;text-transform:uppercase}
+nav button:hover{background:#ffffff66}
+nav button.on{background:#fff;color:var(--gd);box-shadow:0 8px 20px #1f7a4933}
+nav button.on::before{content:"";position:absolute;left:-10px;top:12px;bottom:12px;width:4px;background:var(--gd)}
+.ver{font-size:10px;color:#1d5a38;opacity:.6;letter-spacing:.1em}
+.content{flex:1;min-width:0}
+header{background:#fff;border-bottom:1px solid var(--line);padding:18px 28px;display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+header small{color:var(--m);text-transform:uppercase;letter-spacing:.08em;font-size:11px;display:block}
+header h1{margin:2px 0 0;font-size:24px;letter-spacing:-.01em}
+#fecha::first-letter{text-transform:uppercase}#fecha{color:var(--m);font-size:13px;text-align:right}
+.body{display:flex;gap:24px;align-items:flex-start;padding:24px 28px}
+main{flex:1;min-width:0;max-width:760px}
+aside{width:290px;flex:none;display:none}
+aside .card{padding:16px}
+.card{background:var(--card);border:1px solid var(--line);padding:18px;margin-bottom:16px;box-shadow:0 6px 20px #1f7a490d}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.stat{padding:12px 14px;background:var(--g50);border-left:4px solid var(--g300)}
+.stat span{display:block;font-size:12px;color:var(--m);text-transform:uppercase;letter-spacing:.05em}
+.stat b{font-size:20px;word-break:break-word}
+.stat.red{background:var(--redl);border-left-color:var(--red)}.stat.red b{color:var(--red)}
+.stat.big{grid-column:1/-1;background:linear-gradient(135deg,var(--g300),#5cbf86);border:0;color:#0d3b22;padding:18px;box-shadow:0 10px 24px #2b9a5f33}
+.stat.big span{color:#1d5a38}.stat.big b{font-size:30px}
+.stat.big.neg{background:var(--red);color:#fff}.stat.big.neg span{color:#fde2de}
+button{font:inherit;cursor:pointer;border:0;padding:14px 16px;font-weight:700;min-height:52px}
+.btn{background:var(--g);color:#fff;width:100%;letter-spacing:.02em}
+.btn:hover,.btn:active{background:var(--gd)}
+.btn.red{background:var(--red)}
+.btn.ghost{background:var(--gl);color:var(--gd)}
+.btn.ghost:hover{background:var(--g200)}
+.row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:16px 0}
+.small{min-height:38px;padding:7px 12px;font-size:13px;width:auto}
+.small.del{background:var(--redl);color:var(--red)}
+h2{margin:0 0 12px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--gd)}
+.item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-top:1px solid var(--line)}
+.item:first-of-type{border-top:0}
+.item .l{min-width:0;flex:1 1 140px}.item .l div{overflow-wrap:anywhere}
+.item .m,.m{color:var(--m);font-size:13px}
+.amt{font-weight:800;white-space:nowrap}.in{color:var(--gd)}.out{color:var(--red)}
+.acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.empty{color:var(--m);text-align:center;padding:18px 0}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:3px 9px;margin-right:4px;text-transform:uppercase;letter-spacing:.04em}
+.tag.ok{background:var(--gl);color:var(--gd)}.tag.no{background:var(--ambl);color:var(--amb)}.tag.low{background:var(--redl);color:var(--red)}
+.alert{background:var(--ambl);color:#7a4f0e;border-left:4px solid var(--amb);padding:12px 14px;margin-bottom:16px;font-weight:600}
+.note{font-size:12px;color:var(--m);margin:12px 0 0}
+input,select{font:inherit;width:100%;max-width:100%;min-width:0;-webkit-appearance:none;appearance:none;padding:13px;border:1px solid #c9d9ce;background:#fff;color:var(--t);min-height:50px}
+input:focus,select:focus{outline:0;border-color:var(--g);box-shadow:0 0 0 3px #2b9a5f26}
+label{display:block;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--m);margin:14px 0 5px}
+.seg{display:flex;background:#fff;border:1px solid var(--line);margin-bottom:16px}
+.seg button{flex:1;background:none;color:var(--gd);min-height:46px;padding:8px}
+.seg button.on{background:var(--g);color:#fff}
+.back{position:fixed;inset:0;background:#0d2a1a99;z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:#fff;width:100%;max-width:480px;padding:22px 20px calc(20px + env(safe-area-inset-bottom));max-height:92vh;overflow:auto;border-top:4px solid var(--g)}
+.sheet h2{font-size:15px}
+.bar{height:6px;background:var(--gl);overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--g)}
+.qty{display:flex;align-items:center;gap:8px}
+.qty button{min-height:40px;width:40px;padding:0;background:var(--gl);color:var(--gd);font-size:20px}
+@media(min-width:1100px){aside{display:block}}
+@media(min-width:721px){.back{align-items:center}}
+@media(max-width:720px){
+  .shell{display:block}
+  nav{position:fixed;top:auto;bottom:0;left:0;right:0;width:auto;height:auto;flex-direction:row;padding:0 0 env(safe-area-inset-bottom);background:#fff;border-top:1px solid var(--line);box-shadow:0 -6px 20px #1f7a4914;z-index:6}
+  .logo,.ver{display:none}
+  .menu{flex-direction:row;gap:0;width:100%}
+  nav button{flex:1;width:auto;margin:0;padding:9px 2px 8px;min-height:62px;min-width:0;gap:3px}
+  nav button em{font-size:9.5px;letter-spacing:0;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+  nav button.on{background:var(--g50);box-shadow:none}
+  nav button.on::before{left:0;right:0;top:0;bottom:auto;width:auto;height:3px}
+  header{padding:calc(14px + env(safe-area-inset-top)) 16px 14px;position:sticky;top:0;z-index:5}
+  header h1{font-size:20px}
+  .body{padding:16px 16px 90px}
+  header{flex-wrap:wrap}
+  #fecha{text-align:left}
+  .card{padding:14px}
+  .stat b{font-size:17px}.stat.big b{font-size:24px}
+  .item{flex-wrap:wrap}
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+<nav id="nav"></nav>
+<div class="content">
+<header><div><small>FrutiControl</small><h1 id="titulo"></h1></div><div id="fecha"></div></header>
+<div class="body"><main id="app"></main><aside id="side"></aside></div>
+</div></div>
+
+<script>
+const KEY = 'fruticontrol.v1';
+const ICONS = {
+  caja:'<rect x="3" y="6" width="18" height="13"/><path d="M3 10h18M16 14.5h2"/>',
+  perdidas:'<path d="M3 7l6 6 4-4 8 8"/><path d="M15 17h6v-6"/>',
+  subs:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-4 3-6 6.5-6s6.5 2 6.5 6"/><path d="M16 4.7a3.5 3.5 0 010 6.6M18 14c2.5.6 3.5 2.6 3.5 6"/>',
+  inv:'<path d="M3 7.5L12 3l9 4.5v9L12 21l-9-4.5z"/><path d="M3 7.5l9 4.5 9-4.5M12 12v9"/>',
+  stats:'<path d="M5 20V11M11 20V4M17 20v-6M2 20h20"/>'
+};
+const TABS = [['caja','Caja'],['perdidas','Pérdidas'],['subs','Suscrip.'],['inv','Inventario'],['stats','Estadís.']];
+let db = load();
+let tab = localStorage.getItem('fruticontrol.tab') || 'caja';
+let selDate = today();
+let period = 'day';
+
+function load(){
+  try{ const d = JSON.parse(localStorage.getItem(KEY)); if(d) return Object.assign({caja:[],mermas:[],subs:[],inv:[]}, d); }catch(e){}
+  return {caja:[],mermas:[],subs:[],inv:[]};
+}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(db)); }catch(e){ alert('No se pudo guardar. Revisa el espacio del navegador.'); } }
+function pad(n){ return String(n).padStart(2,'0'); }
+function ymd(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+function today(){ return ymd(new Date()); }
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+function gs(n){ return 'Gs. '+Math.round(n||0).toLocaleString('es-PY'); }
+function num(v){ const n = parseFloat(String(v).replace(',','.')); return isNaN(n)?0:n; }
+function esc(s){ return String(s??'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function fmtDate(s){ const [y,m,d]=s.split('-'); return d+'/'+m+'/'+y; }
+function sum(arr,f){ return arr.reduce((a,x)=>a+(f?f(x):x),0); }
+function parseDate(s){ const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
+
+/* ---------- Cálculo central: el beneficio NO resta pérdidas (ver nota en pantalla) ---------- */
+function totals(from,to){
+  const c = db.caja.filter(x=>x.date>=from && x.date<=to);
+  const ingresos = sum(c.filter(x=>x.type==='in'), x=>x.amount);
+  const gastos = sum(c.filter(x=>x.type==='out'), x=>x.amount);
+  const perdidas = sum(db.mermas.filter(x=>x.date>=from && x.date<=to), x=>x.cost);
+  return {ingresos, gastos, perdidas, beneficio: ingresos-gastos};
+}
+
+/* ---------- Formularios en hoja inferior ---------- */
+function form(title, fields, vals, onSave, saveLabel){
+  const back = document.createElement('div'); back.className='back';
+  back.innerHTML = `<form class="sheet"><h2>${esc(title)}</h2>${fields.map(f=>`
+    <label for="f_${f.k}">${esc(f.label)}</label>
+    ${f.type==='select'
+      ? `<select id="f_${f.k}">${f.opts.map(o=>`<option value="${esc(o[0])}" ${String(vals[f.k]??'')===String(o[0])?'selected':''}>${esc(o[1])}</option>`).join('')}</select>`
+      : `<input id="f_${f.k}" type="${f.type||'text'}" ${f.mode?`inputmode="${f.mode}"`:''} ${f.list?`list="${f.list}"`:''} placeholder="${esc(f.ph||'')}" value="${esc(vals[f.k]??'')}" autocomplete="off">`}`).join('')}
+    <div class="row2"><button type="button" class="btn ghost" id="cancel">Cancelar</button><button class="btn">${esc(saveLabel||'Guardar')}</button></div></form>`;
+  document.body.appendChild(back);
+  const close = ()=>back.remove();
+  back.addEventListener('click', e=>{ if(e.target===back) close(); });
+  back.querySelector('#cancel').onclick = close;
+  back.querySelector('form').onsubmit = e=>{
+    e.preventDefault();
+    const out = {};
+    for(const f of fields){
+      const v = back.querySelector('#f_'+f.k).value.trim();
+      if(f.req && !v){ alert('Falta: '+f.label); return; }
+      if(f.num && (v==='' ? f.req : num(v)<0)){ alert('Número no válido: '+f.label); return; }
+      out[f.k] = f.num ? num(v) : v;
+    }
+    close(); onSave(out);
+  };
+  const first = back.querySelector('input,select'); if(first) first.focus();
+}
+function confirmDel(msg, fn){ if(confirm(msg)){ fn(); save(); render(); } }
+
+/* ---------- Pantallas ---------- */
+const views = {
+  caja(){
+    const t = totals(selDate, selDate);
+    const list = db.caja.filter(x=>x.date===selDate).sort((a,b)=>b.ts-a.ts);
+    return `
+    <div class="card">
+      <input type="date" value="${selDate}" id="selDate" aria-label="Día">
+      <div class="grid" style="margin-top:12px">
+        <div class="stat"><span>⬆️ Ha entrado</span><b class="in">${gs(t.ingresos)}</b></div>
+        <div class="stat red"><span>⬇️ Ha salido</span><b>${gs(t.gastos)}</b></div>
+        <div class="stat big ${t.beneficio<0?'neg':''}"><span>Beneficio estimado del día</span><b>${gs(t.beneficio)}</b></div>
+      </div>
+      <div class="row2">
+        <button class="btn" data-a="addCaja" data-v="in">＋ Ingreso</button>
+        <button class="btn red" data-a="addCaja" data-v="out">－ Gasto</button>
+      </div>
+      <p class="note">Beneficio = ingresos − gastos. Las pérdidas no se restan aquí para no contarlas dos veces.</p>
+    </div>
+    <div class="card"><h2>Movimientos</h2>${list.length? list.map(x=>`
+      <div class="item"><div class="l"><div>${x.type==='in'?'🟢':'🔴'} ${esc(x.concept||(x.type==='in'?'Ingreso':'Gasto'))}</div>
+        <div class="m">${new Date(x.ts).toLocaleTimeString('es-PY',{hour:'2-digit',minute:'2-digit'})}${x.subId?' · Suscripción':''}</div></div>
+        <div style="text-align:right"><div class="amt ${x.type==='in'?'in':'out'}">${x.type==='in'?'+':'−'}${gs(x.amount)}</div>
+        ${x.subId?'':`<button class="small del" data-a="delCaja" data-id="${x.id}">Borrar</button>`}</div></div>`).join('')
+      : '<div class="empty">Sin movimientos este día</div>'}</div>`;
+  },
+
+  perdidas(){
+    const d = today(), m = d.slice(0,7);
+    const list = [...db.mermas].sort((a,b)=>b.ts-a.ts);
+    return `
+    <div class="card">
+      <div class="grid">
+        <div class="stat red"><span>Hoy</span><b>${gs(totals(d,d).perdidas)}</b></div>
+        <div class="stat red"><span>Este mes</span><b>${gs(totals(m+'-01',m+'-31').perdidas)}</b></div>
+      </div>
+      <div class="row2" style="grid-template-columns:1fr"><button class="btn red" data-a="addMerma">＋ Registrar pérdida</button></div>
+      <p class="note">Las pérdidas se anotan solo como información. No bajan el beneficio de la caja.</p>
+    </div>
+    <div class="card"><h2>Historial</h2>${list.length? list.map(x=>`
+      <div class="item"><div class="l"><div>🍎 ${esc(x.product)} <span class="m">× ${x.qty}</span></div><div class="m">${fmtDate(x.date)}</div></div>
+      <div style="text-align:right"><div class="amt out">${gs(x.cost)}</div><button class="small del" data-a="delMerma" data-id="${x.id}">Borrar</button></div></div>`).join('')
+      : '<div class="empty">No hay pérdidas registradas 🎉</div>'}</div>`;
+  },
+
+  subs(){
+    const cm = today().slice(0,7);
+    const list = [...db.subs].sort((a,b)=>a.name.localeCompare(b.name));
+    const cobrado = sum(list.filter(s=>s.paidMonth===cm), s=>s.price);
+    const pend = list.filter(s=>s.pickedMonth!==cm).length;
+    return `
+    <div class="card">
+      <div class="grid">
+        <div class="stat"><span>Clientes</span><b>${list.length}</b></div>
+        <div class="stat"><span>Cobrado este mes</span><b>${gs(cobrado)}</b></div>
+        <div class="stat"><span>Packs por entregar</span><b>${pend}</b></div>
+      </div>
+      <div class="row2" style="grid-template-columns:1fr"><button class="btn" data-a="addSub">＋ Nuevo cliente</button></div>
+      <p class="note">Al marcar "Pagó" se suma el cobro a la caja de hoy automáticamente.</p>
+    </div>
+    ${list.length? list.map(s=>{
+      const paid = s.paidMonth===cm, picked = s.pickedMonth===cm;
+      const wa = s.whatsapp.replace(/\D/g,'');
+      return `<div class="card"><div class="item" style="border:0;padding:0">
+        <div class="l"><div><b>${esc(s.name)}</b></div><div class="m">${esc(s.whatsapp)} · Paga el día ${s.payDay}</div></div>
+        <div class="amt">${gs(s.price)}</div></div>
+        <div style="margin-top:8px"><span class="tag ${paid?'ok':'no'}">${paid?'✔ Pagó':'Pago pendiente'}</span><span class="tag ${picked?'ok':'no'}">${picked?'✔ Recogió pack':'Pack sin recoger'}</span></div>
+        <div class="acts">
+          <button class="small ghost btn" style="width:auto" data-a="togPaid" data-id="${s.id}">${paid?'Quitar pago':'💵 Pagó'}</button>
+          <button class="small ghost btn" style="width:auto" data-a="togPick" data-id="${s.id}">${picked?'Quitar recogido':'📦 Recogió'}</button>
+          ${wa?`<a class="small ghost btn" style="width:auto;text-decoration:none;display:inline-flex;align-items:center;border-radius:10px" href="https://wa.me/${wa}" target="_blank" rel="noopener">💬 WhatsApp</a>`:''}
+          <button class="small ghost btn" style="width:auto" data-a="editSub" data-id="${s.id}">Editar</button>
+          <button class="small del" data-a="delSub" data-id="${s.id}">Borrar</button>
+        </div></div>`; }).join('') : '<div class="card empty">Aún no hay clientes suscritos</div>'}`;
+  },
+
+  inv(){
+    const list = [...db.inv].sort((a,b)=>a.name.localeCompare(b.name));
+    const low = list.filter(p=>p.qty<=p.min);
+    return `
+    ${low.length?`<div class="alert">⚠️ Queda poco: ${low.map(p=>esc(p.name)).join(', ')}</div>`:''}
+    <button class="btn" data-a="addInv" style="margin-bottom:14px">＋ Añadir fruta</button>
+    ${list.length? list.map(p=>`<div class="card">
+      <div class="item" style="border:0;padding:0"><div class="l"><b>${esc(p.name)}</b> ${p.qty<=p.min?'<span class="tag low">Poco stock</span>':''}
+        <div class="m">Compra ${gs(p.buy)} · Venta ${gs(p.sell)} / ${esc(p.unit)}</div></div>
+        <div class="qty"><button data-a="qty" data-id="${p.id}" data-v="-1">−</button><b>${p.qty}</b><button data-a="qty" data-id="${p.id}" data-v="1">＋</button></div></div>
+      <div class="m" style="margin-top:6px">${esc(p.unit)} · aviso si ≤ ${p.min}</div>
+      <div class="acts"><button class="small ghost btn" style="width:auto" data-a="editInv" data-id="${p.id}">Editar</button><button class="small del" data-a="delInv" data-id="${p.id}">Borrar</button></div></div>`).join('')
+      : '<div class="card empty">Aún no hay frutas en el inventario</div>'}`;
+  },
+
+  stats(){
+    const now = new Date(); let from, to, days = [];
+    if(period==='day'){ from=to=today(); }
+    else if(period==='week'){ const d=new Date(now); d.setDate(d.getDate()-((d.getDay()+6)%7)); from=ymd(d); const e=new Date(d); e.setDate(e.getDate()+6); to=ymd(e); }
+    else { const y=now.getFullYear(), m=now.getMonth(); from=ymd(new Date(y,m,1)); to=ymd(new Date(y,m+1,0)); }
+    for(let d=parseDate(from); ymd(d)<=to; d.setDate(d.getDate()+1)) days.push(ymd(d));
+    const t = totals(from,to);
+    const rows = days.map(d=>({d, ...totals(d,d)}));
+    const max = Math.max(1, ...rows.map(r=>Math.max(r.ingresos, r.gastos)));
+    const label = {day:'Hoy',week:'Esta semana',month:'Este mes'}[period];
+    return `
+    <div class="seg">${[['day','Día'],['week','Semana'],['month','Mes']].map(p=>`<button class="${period===p[0]?'on':''}" data-a="period" data-v="${p[0]}">${p[1]}</button>`).join('')}</div>
+    <div class="card"><h2>${label}</h2><div class="grid">
+      <div class="stat"><span>Ingresos</span><b class="in">${gs(t.ingresos)}</b></div>
+      <div class="stat red"><span>Gastos</span><b>${gs(t.gastos)}</b></div>
+      <div class="stat red"><span>Pérdidas</span><b>${gs(t.perdidas)}</b></div>
+      <div class="stat big ${t.beneficio<0?'neg':''}"><span>Beneficio (ingresos − gastos)</span><b>${gs(t.beneficio)}</b></div></div>
+      <p class="note">Las pérdidas se muestran aparte y no se restan otra vez del beneficio.</p></div>
+    ${period!=='day'?`<div class="card"><h2>Por día</h2>${rows.map(r=>`
+      <div class="item" style="display:block"><div style="display:flex;justify-content:space-between"><span>${fmtDate(r.d).slice(0,5)}</span><b class="${r.beneficio<0?'out':'in'}">${gs(r.beneficio)}</b></div>
+      <div class="bar"><i style="width:${r.ingresos/max*100}%"></i></div></div>`).join('')}</div>`:''}`;
+  }
+};
+
+/* ---------- Acciones ---------- */
+const actions = {
+  addCaja(el){
+    const type = el.dataset.v;
+    form(type==='in'?'Nuevo ingreso':'Nuevo gasto', [
+      {k:'amount',label:'Monto (Gs.)',mode:'numeric',num:true,req:true,ph:'0'},
+      {k:'concept',label:'Concepto (opcional)',ph:type==='in'?'Ej: Ventas mañana':'Ej: Compra en el mercado'},
+      {k:'date',label:'Fecha',type:'date',req:true}
+    ], {date:selDate}, v=>{
+      if(v.amount<=0) return alert('El monto debe ser mayor que 0');
+      db.caja.push({id:uid(),ts:Date.now(),type,amount:v.amount,concept:v.concept,date:v.date}); selDate=v.date; save(); render();
+    });
+  },
+  delCaja(el){ confirmDel('¿Borrar este movimiento?', ()=>{ db.caja = db.caja.filter(x=>x.id!==el.dataset.id); }); },
+
+  addMerma(){
+    form('Registrar pérdida', [
+      {k:'product',label:'Producto',req:true,list:'invnames',ph:'Ej: Bananas'},
+      {k:'qty',label:'Cantidad',mode:'decimal',num:true,req:true,ph:'0'},
+      {k:'cost',label:'Coste (Gs.)',mode:'numeric',num:true,req:true,ph:'0'},
+      {k:'date',label:'Fecha',type:'date',req:true}
+    ], {date:today()}, v=>{ db.mermas.push({id:uid(),ts:Date.now(),...v}); save(); render(); });
+  },
+  delMerma(el){ confirmDel('¿Borrar esta pérdida?', ()=>{ db.mermas = db.mermas.filter(x=>x.id!==el.dataset.id); }); },
+
+  addSub(){ subForm({payDay:new Date().getDate()}, v=>{ db.subs.push({id:uid(),...v}); }); },
+  editSub(el){ const s=db.subs.find(x=>x.id===el.dataset.id); subForm(s, v=>{ Object.assign(s,v); }); },
+  delSub(el){ confirmDel('¿Borrar este cliente?', ()=>{ removeSubCash(el.dataset.id); db.subs = db.subs.filter(x=>x.id!==el.dataset.id); }); },
+  togPaid(el){
+    const s=db.subs.find(x=>x.id===el.dataset.id), cm=today().slice(0,7);
+    if(s.paidMonth===cm){ removeSubCash(s.id, cm); s.paidMonth=null; }
+    else { s.paidMonth=cm; db.caja.push({id:uid(),ts:Date.now(),type:'in',amount:s.price,concept:'Suscripción: '+s.name,date:today(),subId:s.id,month:cm}); }
+    save(); render();
+  },
+  togPick(el){ const s=db.subs.find(x=>x.id===el.dataset.id), cm=today().slice(0,7); s.pickedMonth = s.pickedMonth===cm?null:cm; save(); render(); },
+
+  addInv(){ invForm({unit:'kg'}, v=>{ db.inv.push({id:uid(),...v}); }); },
+  editInv(el){ const p=db.inv.find(x=>x.id===el.dataset.id); invForm(p, v=>{ Object.assign(p,v); }); },
+  delInv(el){ confirmDel('¿Borrar esta fruta?', ()=>{ db.inv = db.inv.filter(x=>x.id!==el.dataset.id); }); },
+  qty(el){ const p=db.inv.find(x=>x.id===el.dataset.id); p.qty = Math.max(0, Math.round((p.qty+Number(el.dataset.v))*100)/100); save(); render(); },
+
+  period(el){ period=el.dataset.v; render(); }
+};
+function removeSubCash(id, month){ db.caja = db.caja.filter(x=>!(x.subId===id && (!month || x.month===month))); }
+function subForm(vals, apply){
+  form(vals.id?'Editar cliente':'Nuevo cliente', [
+    {k:'name',label:'Nombre',req:true},
+    {k:'whatsapp',label:'WhatsApp',type:'tel',mode:'tel',ph:'+595 9xx xxx xxx'},
+    {k:'price',label:'Cuota mensual (Gs.)',mode:'numeric',num:true,req:true},
+    {k:'payDay',label:'Día de pago del mes (1-31)',mode:'numeric',num:true,req:true}
+  ], vals, v=>{
+    v.payDay = Math.min(31, Math.max(1, Math.round(v.payDay)));
+    v.whatsapp = v.whatsapp||''; apply(v); save(); render();
+  });
+}
+function invForm(vals, apply){
+  form(vals.id?'Editar fruta':'Añadir fruta', [
+    {k:'name',label:'Fruta',req:true,ph:'Ej: Mango'},
+    {k:'qty',label:'Cantidad en stock',mode:'decimal',num:true,req:true},
+    {k:'unit',label:'Unidad',type:'select',opts:[['kg','kg'],['unidad','unidades'],['caja','cajas']]},
+    {k:'buy',label:'Precio de compra (Gs.)',mode:'numeric',num:true,req:true},
+    {k:'sell',label:'Precio de venta (Gs.)',mode:'numeric',num:true,req:true},
+    {k:'min',label:'Avisar cuando quede (o menos)',mode:'decimal',num:true,req:true,ph:'Ej: 5'}
+  ], vals, v=>{ apply(v); save(); render(); });
+}
+
+/* ---------- Render ---------- */
+function sidePanel(){
+  const d=today(), t=totals(d,d), cm=d.slice(0,7);
+  const low=db.inv.filter(p=>p.qty<=p.min), pend=db.subs.filter(s=>s.pickedMonth!==cm).length;
+  return `<div class="card"><h2>Resumen de hoy</h2>
+    <div class="item"><span class="m">Ingresos</span><b class="in">${gs(t.ingresos)}</b></div>
+    <div class="item"><span class="m">Gastos</span><b class="out">${gs(t.gastos)}</b></div>
+    <div class="item"><span class="m">Pérdidas</span><b class="out">${gs(t.perdidas)}</b></div>
+    <div class="item"><span class="m">Beneficio</span><b>${gs(t.beneficio)}</b></div></div>
+    <div class="card"><h2>Packs por entregar</h2><b style="font-size:26px">${pend}</b></div>
+    <div class="card"><h2>Stock bajo</h2>${low.length?low.map(p=>`<div class="item"><span>${esc(p.name)}</span><span class="tag low">${p.qty} ${esc(p.unit)}</span></div>`).join(''):'<div class="m">Todo en orden ✔</div>'}</div>`;
+}
+function render(){
+  document.getElementById('fecha').textContent = new Date().toLocaleDateString('es-PY',{weekday:'long',day:'numeric',month:'long'});
+  document.getElementById('titulo').textContent = TABS.find(t=>t[0]===tab)[1].replace('Suscrip.','Suscripciones').replace('Estadís.','Estadísticas');
+  document.getElementById('app').innerHTML = views[tab]() +
+    `<datalist id="invnames">${db.inv.map(p=>`<option value="${esc(p.name)}">`).join('')}</datalist>`;
+  document.getElementById('side').innerHTML = sidePanel();
+  document.getElementById('nav').innerHTML = '<div class="logo"><img src="logo.svg" alt="FrutiControl"></div><div class="menu">' + TABS.map(t=>`<button class="${tab===t[0]?'on':''}" data-tab="${t[0]}" aria-label="${t[1]}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square" stroke-linejoin="miter">${ICONS[t[0]]}</svg><em>${t[1]}</em></button>`).join('') + '</div><div class="ver">v1</div>';
+  const sd = document.getElementById('selDate');
+  if(sd) sd.onchange = ()=>{ selDate = sd.value || today(); render(); };
+}
+document.addEventListener('click', e=>{
+  const t = e.target.closest('[data-tab]');
+  if(t){ tab=t.dataset.tab; try{localStorage.setItem('fruticontrol.tab',tab);}catch(_){} render(); window.scrollTo(0,0); return; }
+  const a = e.target.closest('[data-a]');
+  if(a && actions[a.dataset.a]) actions[a.dataset.a](a);
+});
+if(!views[tab]) tab='caja';
+render();
+</script>
+</body>
+</html>
